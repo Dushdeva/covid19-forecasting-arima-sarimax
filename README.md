@@ -3,11 +3,10 @@
 ## Project Overview
 This project focuses on forecasting COVID-19 cases using Time Series Analysis techniques.
 
-The objective was to compare ARIMA and SARIMAX models across different WHO regions and evaluate their forecasting performance using error metrics.
+The objective was to compare `ARIMA` and `SARIMAX` models across different WHO regions and evaluate their forecasting performance using error metrics.
 
 ## Dataset
-Dataset Source:
-https://drive.google.com/file/d/1TJdxCYLWOIDB4UPzXiLIOAfe1Sibmi6r/view
+In the `Dataset` folder
 
 The dataset contains:
 - Country/Region
@@ -45,5 +44,30 @@ The dataset contains:
 - Seasonal patterns significantly impact model accuracy.
 - Visual analysis is as important as numerical metrics.
 
-## Author
-Devang Yadav
+
+# HOW TO RUN THE HEART DISEASE PREDICTION PROJECT
+
+1. Make sure you have Python installed (version 3.7 or higher).
+
+2. Open a terminal/command prompt inside the project folder
+   (the folder that contains `main.py`, `requirements.txt`, and the dataset/ folder).
+
+3. Install the required libraries:
+   `pip install -r requirements.txt`
+
+4. Verify that the file `dataset/heart.csv` exists.
+   (If not, place your heart.csv inside the dataset/ folder.)
+
+5. Run the script:
+   `python main.py`
+
+6. After execution, open the `Report` folder. You will find:
+   - `report.html`   (the main report – open with any browser)
+   - All graphs (PNG files)
+   - `model_comparison.csv` and `data_summary.txt`
+
+7. Double-click on `report.html` to see all visualizations and model results.
+
+# Author
+
+## Devang Yadav
