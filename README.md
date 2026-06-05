@@ -35,18 +35,20 @@ The dataset contains:
 8. Report Generation
 
 ## Project Structure
-`
+
+```text
 heart_disease_project/
 │
-├── dataset/\n
-│   └── heart.csv\n
-├── Report/               (auto-created, contains all outputs)\n
-│   ├── report.html\n
-│   └── *.png (all graphs)\n
-├── main.py               (the full script)\n
-├── requirements.txt\n
-└── README.md\n
-`
+├── dataset/
+│   └── heart.csv
+├── Report/               (auto-created, contains all outputs)
+│   ├── report.html
+│   └── *.png (all graphs)
+├── main.py               (the full script)
+├── requirements.txt
+└── README.md
+```
+
 ## Results
 - SARIMAX performed better in regions with strong seasonal patterns.
 - ARIMA showed competitive performance in some regions.
