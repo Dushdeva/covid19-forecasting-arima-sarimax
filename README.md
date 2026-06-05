@@ -34,6 +34,19 @@ The dataset contains:
 7. Forecast Visualization
 8. Report Generation
 
+## Project Structure
+`
+heart_disease_project/
+│
+├── dataset/
+│   └── heart.csv
+├── Report/               (auto-created, contains all outputs)
+│   ├── report.html
+│   └── *.png (all graphs)
+├── main.py               (the full script)
+├── requirements.txt
+└── README.md
+`
 ## Results
 - SARIMAX performed better in regions with strong seasonal patterns.
 - ARIMA showed competitive performance in some regions.
