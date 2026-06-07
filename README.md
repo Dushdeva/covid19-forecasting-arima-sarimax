@@ -1,88 +1,67 @@
-# COVID-19 Forecasting Using ARIMA and SARIMAX
+# COVID-19 Forecasting using ARIMA & SARIMAX
+
+> Predict COVID-19 cases across 5 WHO regions using ARIMA and SARIMAX models.
 
 ## Project Overview
-This project focuses on forecasting COVID-19 cases using Time Series Analysis techniques.
 
-The objective was to compare `ARIMA` and `SARIMAX` models across different WHO regions and evaluate their forecasting performance using error metrics.
+This project compares **ARIMA** and **SARIMAX** models for forecasting weekly confirmed COVID-19 cases.  
+We analyze five countries, each representing a different WHO region:
 
-## Dataset
-In the `Dataset` folder
+| Country        | WHO Region |
+|----------------|------------|
+| Germany        | EURO       |
+| United States  | AMRO       |
+| India          | SEARO      |
+| South Africa   | AFRO       |
+| Japan          | WPRO       |
 
-The dataset contains:
-- Country/Region
-- Date
-- Confirmed Cases
-- Deaths
-- Recovered Cases
+### Key Questions
+- Can time series models reliably predict COVID-19 cases?
+- How do forecasts differ across WHO regions?
+- Which model (ARIMA or SARIMAX) works better for this data?
 
-## Technologies Used
-- Python
-- Pandas
-- NumPy
-- Matplotlib
-- Statsmodels
-- Python-Docx
-- Google Colab
-
-## Methodology
-1. Data Cleaning
-2. Weekly Aggregation
-3. Exploratory Data Analysis
-4. ARIMA Model Development
-5. SARIMAX Model Development
-6. Performance Comparison
-7. Forecast Visualization
-8. Report Generation
-
-## Project Structure
-
+## Repository Structure
 ```text
-heart_disease_project/
+covid19-forecasting-arima-sarimax/
 │
-├── dataset/
-│   └── heart.csv
-├── Report/               (auto-created, contains all outputs)
-│   ├── report.html
-│   └── *.png (all graphs)
-├── main.py               (the full script)
-├── requirements.txt
-└── README.md
+├── COVID_Forecasting_Project.ipynb # Main notebook (Google Colab)
+├── README.md # This file
+├── requirements.txt # Python dependencies (local use)
+│
+├── data/ # (auto-generated) raw data
+├── images/ # (auto-generated) charts
+│ ├── model_comparison.png
+│ └── india_forecast.png
+│
+└── reports/ # (auto-generated) summary report
+└── summary.txt
 ```
 
-## Results
-- SARIMAX performed better in regions with strong seasonal patterns.
-- ARIMA showed competitive performance in some regions.
-- Forecast confidence intervals widened appropriately over time.
 
-## Key Learnings
-- Time series forecasting requires careful preprocessing.
-- Seasonal patterns significantly impact model accuracy.
-- Visual analysis is as important as numerical metrics.
+## How to Run
 
+### Option 1: Google Colab (Recommended – no setup)
 
-# HOW TO RUN THE HEART DISEASE PREDICTION PROJECT
+1. Click the **"Open In Colab"** badge at the top of this README.
+2. In Colab, go to **Runtime → Run all**.
+3. Wait 2-3 minutes – the notebook will:
+   - Download the latest COVID-19 data
+   - Train ARIMA and SARIMAX models
+   - Generate comparison charts
+   - Display a final summary report
+   - Offer a download link for all results (ZIP file)
 
-1. Make sure you have Python installed (version 3.7 or higher).
+No installation required – works on any device with a browser.
 
-2. Open a terminal/command prompt inside the project folder
-   (the folder that contains `main.py`, `requirements.txt`, and the dataset/ folder).
+### Option 2: Run locally (Python)
 
-3. Install the required libraries:
-   `pip install -r requirements.txt`
+```bash
+# Clone the repository
+git clone https://github.com/YOUR_USERNAME/covid19-forecasting-arima-sarimax.git
+cd covid19-forecasting-arima-sarimax
 
-4. Verify that the file `dataset/heart.csv` exists.
-   (If not, place your heart.csv inside the dataset/ folder.)
+# Install dependencies
+pip install -r requirements.txt
 
-5. Run the script:
-   `python main.py`
-
-6. After execution, open the `Report` folder. You will find:
-   - `report.html`   (the main report – open with any browser)
-   - All graphs (PNG files)
-   - `model_comparison.csv` and `data_summary.txt`
-
-7. Double-click on `report.html` to see all visualizations and model results.
-
-# Author
-
-## Devang Yadav
+# Run the notebook (or convert to Python script)
+jupyter notebook COVID_Forecasting_Project.ipynb
