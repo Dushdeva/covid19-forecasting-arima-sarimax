@@ -15,6 +15,56 @@ We analyze five countries, each representing a different WHO region:
 | South Africa   | AFRO       |
 | Japan          | WPRO       |
 
+<!--
+Yes, we do use the WHO region mapping — but only for labeling and results grouping, not for actual regional forecasting.
+Here's exactly what happens in the code:
+
+What we actually do with the WHO region data:
+Mapping – Each country is assigned a WHO region (e.g., Germany → EURO).
+
+Display – The region appears in:
+
+The performance table (printed and saved to report)
+
+The bar chart x‑axis labels
+
+The final summary text
+
+Example from the code (Step 4 or report_generator.py):
+
+python
+region_map = {
+    'Germany': 'EURO',
+    'United States': 'AMRO',
+    'India': 'SEARO',
+    'South Africa': 'AFRO',
+    'Japan': 'WPRO'
+}
+Then later:
+
+python
+table_data.append([region, country, f"{arimam:.1f}%", f"{sarimaxm:.1f}%", better])
+What we do NOT do (and could be added):
+❌ Aggregate cases at the WHO region level (e.g., sum all countries in EURO and forecast that)
+
+❌ Train a separate model per region (we train per country, not per region)
+
+❌ Compare region‑wide seasonality across continents
+
+So the region is used as a descriptive label, not as a forecasting unit.
+
+- Why the code is written this way
+The original report you shared mentions WHO regions, but the actual forecasting is done at the country level (Germany, India, etc.) and then presented with their region names. This is typical for a beginner/mid-level project: you show that you understand the regional context, but you don't overcomplicate the modeling.
+
+- If you want true regional forecasting (aggregated data)
+You could modify the preprocessing to:
+
+python code :
+# Group by WHO region and date, sum cases
+regional_weekly = df.groupby(['who_region', 'date'])['new_cases'].sum().reset_index()
+
+-->
+
 ### Key Questions
 - Can time series models reliably predict COVID-19 cases?
 - How do forecasts differ across WHO regions?
