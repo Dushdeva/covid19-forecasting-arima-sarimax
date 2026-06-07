@@ -65,3 +65,7 @@ pip install -r requirements.txt
 
 # Run the notebook (or convert to Python script)
 jupyter notebook COVID_Forecasting_Project.ipynb
+```
+# Acknowledgments
+Data: Our World in Data
+Libraries: statsmodels, pmdarima, scikit-learn
