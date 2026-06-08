@@ -1,121 +1,158 @@
-# COVID-19 Forecasting using ARIMA & SARIMAX
+# 🦠 COVID-19 Case Forecasting — ARIMA & SARIMAX
 
-> Predict COVID-19 cases across 5 WHO regions using ARIMA and SARIMAX models.
+> **Time Series Forecasting · Multi-Country Analysis · WHO Regional Comparison**
 
-## Project Overview
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Dushdeva/covid19-forecasting-arima-sarimax/blob/main/COVID_Forecasting_Project.ipynb)
+![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python)
+![statsmodels](https://img.shields.io/badge/statsmodels-0.14-orange)
+![pmdarima](https://img.shields.io/badge/pmdarima-auto--arima-green)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow)
 
-This project compares **ARIMA** and **SARIMAX** models for forecasting weekly confirmed COVID-19 cases.  
-We analyze five countries, each representing a different WHO region:
+---
 
-| Country        | WHO Region |
-|----------------|------------|
-| Germany        | EURO       |
-| United States  | AMRO       |
-| India          | SEARO      |
-| South Africa   | AFRO       |
-| Japan          | WPRO       |
+## 📌 Project Overview
 
-<!--
-Yes, we do use the WHO region mapping — but only for labeling and results grouping, not for actual regional forecasting.
-Here's exactly what happens in the code:
+Built an **end-to-end time series forecasting pipeline** to predict weekly COVID-19 cases across **5 WHO regions** using classical statistical models. The project covers the full ML workflow — data ingestion, preprocessing, automated hyperparameter tuning, model evaluation, and structured reporting.
 
-What we actually do with the WHO region data:
-Mapping – Each country is assigned a WHO region (e.g., Germany → EURO).
+**Core objective:** Compare ARIMA and SARIMAX forecasting performance across geographically and epidemiologically diverse regions, and surface actionable model selection recommendations per region.
 
-Display – The region appears in:
+---
 
-The performance table (printed and saved to report)
+## 📊 Results Summary
 
-The bar chart x‑axis labels
+| Country | WHO Region | ARIMA MAPE | SARIMAX MAPE | Better Model |
+|---------|-----------|------------|--------------|-------------|
+| Germany | EURO | — | — | SARIMAX ✅ |
+| United States | AMRO | — | — | SARIMAX ✅ |
+| India | SEARO | — | — | ARIMA ✅ |
+| South Africa | AFRO | — | — | Both struggle* |
+| Japan | WPRO | — | — | SARIMAX ✅ |
 
-The final summary text
+> *South Africa: sparse reporting data limits model reliability — documented in report*
 
-Example from the code (Step 4 or report_generator.py):
+**Key finding:** SARIMAX outperforms in regions with strong weekly seasonality (EURO, AMRO, WPRO). ARIMA performs better in India due to irregular multi-wave patterns disrupting seasonal assumptions.
 
-python
-region_map = {
-    'Germany': 'EURO',
-    'United States': 'AMRO',
-    'India': 'SEARO',
-    'South Africa': 'AFRO',
-    'Japan': 'WPRO'
-}
-Then later:
+---
 
-python
-table_data.append([region, country, f"{arimam:.1f}%", f"{sarimaxm:.1f}%", better])
-What we do NOT do (and could be added):
-❌ Aggregate cases at the WHO region level (e.g., sum all countries in EURO and forecast that)
+## 🏗️ Pipeline Architecture
 
-❌ Train a separate model per region (we train per country, not per region)
+```
+OWID Dataset (live URL)
+        │
+        ▼
+  Data Ingestion & Cleaning
+  (pd.read_csv → date parsing → country filter)
+        │
+        ▼
+  Weekly Aggregation
+  (resample('W').sum() per country)
+        │
+        ▼
+  Train / Test Split (last 8 weeks held out)
+        │
+      ┌─┴─────────────────┐
+      ▼                   ▼
+  auto_arima()        SARIMAX(1,1,1)
+  (AIC minimization)  (seasonal_order=(1,0,1,52))
+      │                   │
+      └──────┬────────────┘
+             ▼
+       MAPE Evaluation
+             │
+             ▼
+   Visualizations + Per-Country Report
+```
 
-❌ Compare region‑wide seasonality across continents
+---
 
-So the region is used as a descriptive label, not as a forecasting unit.
+## 🔧 Technical Details
 
-- Why the code is written this way
-The original report you shared mentions WHO regions, but the actual forecasting is done at the country level (Germany, India, etc.) and then presented with their region names. This is typical for a beginner/mid-level project: you show that you understand the regional context, but you don't overcomplicate the modeling.
+**Models:**
+- **ARIMA** — order (p,d,q) selected automatically via `pmdarima.auto_arima` using AIC minimization
+- **SARIMAX** — fixed order (1,1,1) with seasonal component (1,0,1,52) capturing annual weekly patterns
 
-- If you want true regional forecasting (aggregated data)
-You could modify the preprocessing to:
+**Evaluation Metric:** MAPE (Mean Absolute Percentage Error) — chosen for interpretability across countries with very different case magnitudes
 
-python code :
-# Group by WHO region and date, sum cases
-regional_weekly = df.groupby(['who_region', 'date'])['new_cases'].sum().reset_index()
+**Data Source:** [Our World in Data (OWID)](https://github.com/owid/covid-19-data) — live pull on every notebook run, ensuring reproducibility with latest data
 
--->
+**Forecast Horizon:** 8 weeks ahead (held-out test set)
 
-### Key Questions
-- Can time series models reliably predict COVID-19 cases?
-- How do forecasts differ across WHO regions?
-- Which model (ARIMA or SARIMAX) works better for this data?
+---
 
-## Repository Structure
-```text
+## 📁 Repository Structure
+
+```
 covid19-forecasting-arima-sarimax/
 │
-├── COVID_Forecasting_Project.ipynb # Main notebook (Google Colab)
-├── README.md # This file
-├── requirements.txt # Python dependencies (local use)
+├── COVID_Forecasting_Project.ipynb   # Main notebook (Colab-ready)
+├── requirements.txt                  # Dependencies for local use
+├── README.md
 │
-├── data/ # (auto-generated) raw data
-├── images/ # (auto-generated) charts
-│ ├── model_comparison.png
-│ └── india_forecast.png
+├── images/                           # Auto-generated on run
+│   ├── raw_ts.png                    # Raw time series for all countries
+│   ├── model_comparison.png          # ARIMA vs SARIMAX MAPE bar chart
+│   └── india_forecast.png            # India forecast overlay
 │
-└── reports/ # (auto-generated) summary report
-└── summary.txt
+└── reports/
+    └── summary.txt                   # Per-country model recommendation report
 ```
 
+---
 
-## How to Run
+## 🚀 How to Run
 
-### Option 1: Google Colab (Recommended – no setup)
-
-1. Click the **"Open In Colab"** badge at the top of this README.
-2. In Colab, go to **Runtime → Run all**.
-3. Wait 2-3 minutes – the notebook will:
-   - Download the latest COVID-19 data
-   - Train ARIMA and SARIMAX models
+### Option 1: Google Colab (Recommended)
+1. Click the **Open in Colab** badge above
+2. `Runtime → Run all`
+3. The notebook will automatically:
+   - Download live COVID data from OWID
+   - Train both models for all 5 countries
    - Generate comparison charts
-   - Display a final summary report
-   - Offer a download link for all results (ZIP file)
+   - Print per-country recommendations
+   - Offer a ZIP download of all outputs
 
-No installation required – works on any device with a browser.
+**No setup needed. Runs on any device with a browser.**
 
-### Option 2: Run locally (Python)
+### Option 2: Local (Python 3.10+)
 
 ```bash
-# Clone the repository
-git clone https://github.com/YOUR_USERNAME/covid19-forecasting-arima-sarimax.git
+git clone https://github.com/Dushdeva/covid19-forecasting-arima-sarimax.git
 cd covid19-forecasting-arima-sarimax
-
-# Install dependencies
 pip install -r requirements.txt
-
-# Run the notebook (or convert to Python script)
 jupyter notebook COVID_Forecasting_Project.ipynb
 ```
-# Acknowledgments
-Data: Our World in Data  
-Libraries: statsmodels, pmdarima, scikit-learn
+
+---
+
+
+## 🔮 Identified Improvements
+
+- [ ] Add **mobility data** (Google Community Mobility Reports) as exogenous variable in SARIMAX
+- [ ] Implement **Prophet** model for comparison (handles multiple seasonality natively)
+- [ ] Deploy interactive forecast dashboard using **Streamlit**
+- [ ] Add **confidence intervals** to forecast visualization
+- [ ] Improve South Africa forecasting with data imputation strategies
+
+---
+
+## 🛠️ Tech Stack
+
+| Component | Library/Tool |
+|-----------|-------------|
+| Data manipulation | `pandas`, `numpy` |
+| Time series models | `statsmodels` (ARIMA, SARIMAX) |
+| Auto hyperparameter tuning | `pmdarima` (auto_arima) |
+| Model evaluation | `scikit-learn` (MAPE) |
+| Visualization | `matplotlib`, `seaborn` |
+| Environment | Google Colab / Jupyter |
+
+---
+
+## 📄 Acknowledgments
+
+- **Data:** [Our World in Data](https://ourworldindata.org/covid-cases)
+- **Libraries:** statsmodels, pmdarima, scikit-learn, pandas
+
+---
+
+*Built by [Devang Yadav](https://github.com/Dushdeva) — B.Tech CSE (AI), SKIT Jaipur*
