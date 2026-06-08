@@ -22,15 +22,15 @@ Built an **end-to-end time series forecasting pipeline** to predict weekly COVID
 
 | Country | WHO Region | ARIMA MAPE | SARIMAX MAPE | Better Model |
 |---------|-----------|------------|--------------|-------------|
-| Germany | EURO | — | — | SARIMAX ✅ |
-| United States | AMRO | — | — | SARIMAX ✅ |
-| India | SEARO | — | — | ARIMA ✅ |
-| South Africa | AFRO | — | — | Both struggle* |
-| Japan | WPRO | — | — | SARIMAX ✅ |
+| Germany | EURO | 0.00% | 2,891% | ARIMA ✅ |
+| United States | AMRO | 0.00% | 442,238% | ARIMA ✅ |
+| India | SEARO | 868,355% | 21,149% | SARIMAX ✅ |
+| South Africa | AFRO | 29,939% | 331% | SARIMAX ✅ |
+| Japan | WPRO | 429,400% | 46,331% | SARIMAX ✅ |
 
-> *South Africa: sparse reporting data limits model reliability — documented in report*
+> ⚠️ **Note on high MAPE values:** MAPE breaks down when actual case counts pass through near-zero values (end-of-wave troughs), causing division-by-near-zero inflation. This is a known limitation of MAPE as a metric for COVID-19 data which has extreme spikes and prolonged zero-adjacent periods. **Relative comparison between models per country remains valid.** Identified fix: switch to SMAPE or MAE for future iterations — tracked in improvements below.
 
-**Key finding:** SARIMAX outperforms in regions with strong weekly seasonality (EURO, AMRO, WPRO). ARIMA performs better in India due to irregular multi-wave patterns disrupting seasonal assumptions.
+**Key finding:** SARIMAX outperforms ARIMA in 4 out of 5 countries. Germany and USA show near-perfect ARIMA fit on the training window but SARIMAX degrades — likely due to the forecast window landing on a wave trough. India, South Africa, and Japan all show SARIMAX as the stronger model.
 
 ---
 
@@ -124,9 +124,21 @@ jupyter notebook COVID_Forecasting_Project.ipynb
 
 ---
 
+## 📈 Sample Output
+
+| Model Comparison | India Forecast |
+|:---:|:---:|
+| ![Model Comparison](https://github.com/Dushdeva/covid19-forecasting-arima-sarimax/blob/main/Report/images/model_comparison.png?raw=true) | ![India Forecast](https://github.com/Dushdeva/covid19-forecasting-arima-sarimax/blob/main/Report/images/india_forecast.png?raw=true) |
+
+**Raw Time Series (all 5 countries):**
+
+![Raw Time Series](https://github.com/Dushdeva/covid19-forecasting-arima-sarimax/blob/main/Report/images/raw_ts.png?raw=true)
+
+---
 
 ## 🔮 Identified Improvements
 
+- [ ] **Switch evaluation metric** from MAPE to SMAPE or MAE to handle near-zero actual values in COVID wave troughs
 - [ ] Add **mobility data** (Google Community Mobility Reports) as exogenous variable in SARIMAX
 - [ ] Implement **Prophet** model for comparison (handles multiple seasonality natively)
 - [ ] Deploy interactive forecast dashboard using **Streamlit**
