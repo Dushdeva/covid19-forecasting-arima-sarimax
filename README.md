@@ -10,6 +10,8 @@
 
 ---
 
+[![Live Dashboard](https://img.shields.io/badge/Live%20Dashboard-Streamlit-FF4B4B?logo=streamlit)](https://covid19-forecasting-arima-sarimax-fptdpghjs6zgjddazwksmh.streamlit.app/)
+
 ## 📌 Project Overview
 
 Built an **end-to-end time series forecasting pipeline** to predict weekly COVID-19 cases across **5 WHO regions** using classical statistical models. The project covers the full ML workflow — data ingestion, preprocessing, automated hyperparameter tuning, model evaluation, and structured reporting.
