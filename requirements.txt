@@ -5,7 +5,3 @@ matplotlib
 statsmodels
 pmdarima
 scikit-learn
-
-
-# Note for Colab users: 
-You don't need to install these manually – the notebook includes !pip install commands. This file is for local runs or for reference.
